@@ -8,7 +8,7 @@ import { License } from './tfoundry.table';
 @contract
 export class tfoundry extends AllowContract {
 
-  private licenseTable:              TableStore<License> = License.GetTable(this.receiver);
+  private licenseTable:              TableStore<License> = License.GetTable(Name.fromString('tfoundry'));
 
   @action("transfer",notify)
   transfer(from: Name, to: Name, quantity: Asset, memo: string): void {
@@ -40,6 +40,38 @@ export class tfoundry extends AllowContract {
     
   }
 
+  @action("register")
+  register(from: Name, to: Name, memo: string): void {
+
+    print('register call')
+    check(from != to, "cannot transfer to self");
+    if (from != this.contract){
+      //requireAuth(from);
+      check(isAccount(from), "to account does not exist");
+
+      const license = this.licenseTable.lowerBound(from.N);
+      if (!license) {
+
+        print('will create')
+        this.createLicense(from,memo);
+
+      }else {
+
+        print(`will extends ${license.end_date.toString()} ${license.owner.toString()}`)
+        this.extendsLicense(license,memo)
+        this.licenseTable.update(license,this.receiver)
+
+      }
+    }else {
+
+      print('skipped   cause the transfer if originated from the contract')
+
+    }
+    
+  }
+
+  
+
   extendsLicense (license:License,licenseType:string):License{
    
     license.end_date = license.end_date+(this.getLicenseEndDate(licenseType) as i64)
@@ -62,7 +94,14 @@ export class tfoundry extends AllowContract {
     if (licenseType == YEARLY_LICENSE) return YEARLY_DURATION;
     if (licenseType == LIFETIME_LICENSE) return LIFETIME_DURATION;
     return MONTHLY_DURATION;
+
+  }
+
+  isPriceMatch ():boolean {
+
+
     
+
   }
 
 

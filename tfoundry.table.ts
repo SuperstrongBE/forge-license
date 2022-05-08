@@ -21,7 +21,7 @@ class LicensesTable extends Table {
 
     static GetTable (code:Name):TableStore<License>{
 
-        return new TableStore<License>(code,code,Name.fromString('license'));
+        return new TableStore<License>(code,code,Name.fromString('licenses'));
 
     }
 
