@@ -4,14 +4,14 @@ A basic smart contract that ue transfer notification. Deployed on testnet under 
 Don't use it in production !!!!
 
 ## How to use 
-[code]
-import { Api, JsonRpc } from '@proton/js';
-import {
-  GetAccountResult,
-  GetTableRowsResult,
-} from '@proton/js/dist/rpc/types';
+```
+    import { Api, JsonRpc } from '@proton/js';
+    import {
+      GetAccountResult,
+      GetTableRowsResult,
+    } from '@proton/js/dist/rpc/types';
 
-const rpc = new JsonRpc(['http://proton-api-testnet.eosiomadrid.io','http://bp1-testnet.euproton.com']);
+    const rpc = new JsonRpc(['http://proton-api-testnet.eosiomadrid.io','http://bp1-testnet.euproton.com']);
     const api = new Api({
       rpc: rpc,
     });
@@ -28,5 +28,4 @@ const rpc = new JsonRpc(['http://proton-api-testnet.eosiomadrid.io','http://bp1-
       }
     );
     console.log (tableRow)
-
-[/code]
+```
